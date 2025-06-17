@@ -4,8 +4,6 @@ import com.vab.transactionmanager.dto.StandardResponse;
 import com.vab.transactionmanager.dto.TransactionDto;
 import com.vab.transactionmanager.entity.TransactionDetails;
 import com.vab.transactionmanager.service.TransactionService;
-import com.vab.transactionmanager.util.Constants;
-import com.vab.transactionmanager.util.TransactionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -79,7 +76,6 @@ public class TransactionController {
         transactionService.saveTransaction(transactionDetails);
 
         dataUpdated.set(true);
-        TransactionUtility.playSound();
         return "redirect:/transactions";
     }
 
@@ -92,7 +88,6 @@ public class TransactionController {
         transactionService.saveTransaction(transactionDetails);
 
         dataUpdated.set(true);
-        TransactionUtility.playSound();
         return new StandardResponse("Transaction saved to database");
     }
 
