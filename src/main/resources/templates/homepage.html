@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://getbootstrap.com/docs/4.0/examples/starter-template/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TRANSACTIONS</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg  navbar-light sticky-top align-items-center justify-content-center h-100 w-100"
+     style="background-color: #e3f2fd;">
+    <div class="container navbar-nav w-100">
+        <div class="row w-100">
+            <div class="col text-center">
+                <form class="nav-item nav-link card-text font-weight-light" method="post"
+                      th:action="@{/transactions}">
+                    <input name="postedDate" type="hidden" th:value="*{postedDate}">
+                    <input name="dateDifference" type="hidden" th:value="-1">
+                    <button name="submit" type="submit" class="btn btn-sm btn-outline-secondary w-100">BACK</button>
+                </form>
+            </div>
+            <div class="col text-center">
+                <p class="card-text font-weight-light h-100">Date
+                    <span class="card-text font-weight-light h-100" th:text="${postedDate}"></span>
+                </p>
+            </div>
+            <div class="col text-center">
+                <form class="nav-item nav-link card-text font-weight-light" method="post"
+                      th:action="@{/transactions}">
+                    <input name="postedDate" type="hidden" th:value="*{postedDate}">
+                    <input name="dateDifference" type="hidden" th:value="1">
+                    <button name="submit" type="submit" class="btn btn-sm btn-outline-secondary w-100">NEXT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="d-flex align-items-center justify-content-center h-100 w-100">
+    <div class="row w-100">
+        <div class="w-100">
+            <table class="table table-dark table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">AMOUNT</th>
+                    <th scope="col">TIME</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="transaction, iStat: ${transactions}">
+                    <th scope="row"><p class="card-text font-weight-light" th:text="${transaction.getId()}"></p></th>
+                    <div th:if="!${iStat.last}">
+                        <th><p class="card-text font-weight-light" th:text="${transaction.getAmount()}"></p></th>
+                    </div>
+                    <div th:if="${iStat.last}">
+                        <th><p class="card-text font-weight-light text-success"
+                               th:text="${transaction.getAmount()}"></p></th>
+                    </div>
+                    <th><p class="card-text font-weight-light" th:text="${transaction.getTimeStamp()}"></p></th>
+                    <th>
+                        <form class="mx-auto card-text font-weight-light" method="post"
+                              th:action="@{/transactions/delete}">
+                            <input name="transactionId" type="hidden" th:value="${transaction.getId()}">
+                            <button name="submit" type="submit"
+                                    class="font-weight-light btn btn-sm btn-outline-secondary">DELETE
+                            </button>
+                        </form>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="row"><p class="card-text font-weight-light">Total</p></th>
+                    <th><p class="card-text font-weight-light" th:text="${totalAmount}"></p></th>
+                    <th><p class="card-text font-weight-light"></p></th>
+                    <th><p class="card-text font-weight-light"></p></th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${postedDate.getDayOfMonth() == T(java.time.LocalDateTime).now().getDayOfMonth()}" class="w-100 text-center p-2">
+            <a type="button" href="/transactions/add" class="btn btn-primary">ADD TRANSACTION</a>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+
+    setInterval(() => {
+      fetch('/api/has-update')
+        .then(res => res.json())
+        .then(data => {
+          if (data.updated) {
+            location.reload(); // Refresh the page
+          }
+        });
+    }, 500); // Check every 5 seconds
+</script>
+</body>
+</html>
