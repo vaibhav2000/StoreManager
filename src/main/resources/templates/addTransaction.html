@@ -8,19 +8,26 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<main role="main" class="container">
-<div class="starter-template">
-    <h1>Registration Page</h1>
-    <p class="lead">Please enter your details below</p>
-    <form th:action="@{/transactions/addtransaction}" th:object="${transactionDto}" method="post">
-        <div class="form-row p-2">
-            <div class="col-md-6 mx-auto">
-                <input type="text" th:field="*{amount}" class="form-control" placeholder="AMOUNT">
-            </div>
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
         </div>
-        <button type="submit" class="btn btn-outline-dark">Add</button>
-    </form>
+        <div class="col p-5">
+            <form th:action="@{/transactions/addtransaction}" th:object="${transactionDto}" method="post">
+                <br>
+                <br>
+                <h3>Enter Amount</h3>
+                <div class="form-row p-2">
+                    <div class="w-100 mx-auto">
+                        <input type="text" th:field="*{amount}" class="form-control" placeholder="AMOUNT">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-dark">Add</button>
+            </form>
+        </div>
+        <div class="col">
+        </div>
+    </div>
 </div>
-</main>
 </body>
 </html>
