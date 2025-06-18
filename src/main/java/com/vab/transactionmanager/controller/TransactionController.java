@@ -70,6 +70,11 @@ public class TransactionController {
 
     @PostMapping("/transactions/addtransaction")
     public String addTransaction(@ModelAttribute("transactionDto") TransactionDto transactionDto) {
+
+        if (transactionDto.getAmount() == null) {
+            return "redirect:/transactions";
+        }
+
         TransactionDetails transactionDetails = new TransactionDetails();
         transactionDetails.setAmount(transactionDto.getAmount());
         transactionDetails.setTimeStamp(LocalDateTime.now());
@@ -82,13 +87,18 @@ public class TransactionController {
     @ResponseBody
     @PostMapping("/transactions/add")
     public StandardResponse addRestTransaction(@RequestBody TransactionDto transactionDto) {
+
+        if (transactionDto.getAmount() == null) {
+            return new StandardResponse("Null Transaction");
+        }
+
         TransactionDetails transactionDetails = new TransactionDetails();
         transactionDetails.setAmount(transactionDto.getAmount());
         transactionDetails.setTimeStamp(LocalDateTime.now());
         transactionService.saveTransaction(transactionDetails);
 
         dataUpdated.set(true);
-        return new StandardResponse("Transaction saved to database");
+        return new StandardResponse("Transaction Saved to Database");
     }
 
     @ResponseBody
