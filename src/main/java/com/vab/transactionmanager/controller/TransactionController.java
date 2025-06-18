@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class TransactionController {
     @GetMapping("/transactions")
     public String getAllTransactions(Model model) {
 
-        List<TransactionDetails> transactionDetails = transactionService.getAllTransactionsByDate(LocalDateTime.now());
+        List<TransactionDetails> transactionDetails = transactionService.getAllTransactionsByDate(LocalDate.now());
         BigDecimal totalAmount = transactionDetails.stream().map(TransactionDetails::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
         model.addAttribute("transactions", transactionDetails);
         model.addAttribute("totalAmount", totalAmount);
@@ -45,7 +46,7 @@ public class TransactionController {
 
         postedDate = postedDate.plusDays(dateDifference);
 
-        List<TransactionDetails> transactionDetails = transactionService.getAllTransactionsByDate(postedDate);
+        List<TransactionDetails> transactionDetails = transactionService.getAllTransactionsByDate(postedDate.toLocalDate());
         BigDecimal totalAmount = transactionDetails.stream().map(TransactionDetails::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
         model.addAttribute("transactions", transactionDetails);
         model.addAttribute("totalAmount", totalAmount);

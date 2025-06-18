@@ -24,23 +24,17 @@ public class TransactionService {
 
     public void saveTransaction(TransactionDetails transactionDetails) {
         transactionRepository.save(transactionDetails);
-//        log.info("Transaction saved to database: " + transactionDetails.toString());
+        log.info("Transaction saved to database: " + transactionDetails.toString());
     }
 
     public void deleteTransaction(Integer transactionId) {
         transactionRepository.deleteById(transactionId);
-//        log.info("Transaction deleted from database: " + transactionId);
+        log.info("Transaction deleted from database: " + transactionId);
     }
 
-    public List<TransactionDetails> getAllTransactionsByDate(LocalDateTime localDateTime) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Constants.STANDARD_DATE_FORMAT);
-
-        String currentFormattedDate = localDateTime.format(dateTimeFormatter);
-        List<TransactionDetails> transactionDetailsList = transactionRepository.findAll();
-        transactionDetailsList = transactionDetailsList.stream().filter((transactionDetails) ->
-                transactionDetails.getTimeStamp().format(dateTimeFormatter).equals(currentFormattedDate)).toList();
-
-//        log.info("All transactions of " + currentFormattedDate + " fetched from database.");
+    public List<TransactionDetails> getAllTransactionsByDate(LocalDate localDate) {
+        List<TransactionDetails> transactionDetailsList = transactionRepository.findByTimeStamp(localDate);
+        log.info("All transactions of " + localDate + " fetched from database.");
         return transactionDetailsList;
     }
 }
